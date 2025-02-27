@@ -1,2 +1,2 @@
-# Chess---JavaFX
+# Chess-JavaFX
 Chess program using JavaFX
