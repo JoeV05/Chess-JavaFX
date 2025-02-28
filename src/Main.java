@@ -1,10 +1,13 @@
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 public class Main extends Application
 {
@@ -24,6 +27,18 @@ public class Main extends Application
         root.setCenter(this.canvas);
 
         Scene scene = new Scene(root, CANVAS_WIDTH, CANVAS_HEIGHT);
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                int boardX = Math.floorDiv((int) event.getSceneX(), 93);
+                int boardY = Math.floorDiv((int) event.getSceneY(), 93);
+
+                System.out.println("Actual (x, y): " + event.getSceneX() + " " + event.getSceneY());
+                System.out.println("Board (x, y): " + boardX + " " + boardY);
+
+                System.out.print("\n");
+            }
+        });
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -34,7 +49,13 @@ public class Main extends Application
     private void draw()
     {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.BLACK);
+        this.drawBoard(gc);
+        this.drawPieces(gc);
+    }
+
+    private void drawBoard(GraphicsContext gc)
+    {
+        gc.setFill(Color.GREY);
 
         for (int y = 0; y < 8; y++)
         {
@@ -48,8 +69,26 @@ public class Main extends Application
         }
     }
 
-    public static void main(String[] args) {
-        Game.getGame().printBoard();
+    private void drawPieces(GraphicsContext gc)
+    {
+        Piece[][] board = Game.getGame().getBoard();
+
+        for (int y = 0; y < 8; y++)
+        {
+            for (int x = 0; x < 8; x++)
+            {
+                Piece p = board[y][x];
+                if (p != null)
+                {
+                    Image pieceSprite = board[y][x].getSprite();
+                    gc.drawImage(pieceSprite, x * GRID_CELL_SIZE, y * GRID_CELL_SIZE, GRID_CELL_SIZE, GRID_CELL_SIZE);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args)
+    {
         launch(args);
     }
 }
