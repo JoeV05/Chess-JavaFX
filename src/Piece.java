@@ -1,8 +1,11 @@
+import javafx.scene.image.Image;
+
 public abstract class Piece
 {
     protected final Colour colour;
     protected Coordinate location;
     protected PieceType type;
+    protected Image sprite;
 
     public Piece(Colour colour, Coordinate location)
     {
@@ -19,5 +22,10 @@ public abstract class Piece
     public Colour getColour()
     {
         return this.colour;
+    }
+
+    public Image getSprite()
+    {
+        return this.sprite;
     }
 }
