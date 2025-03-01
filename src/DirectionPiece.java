@@ -16,5 +16,11 @@ public abstract class DirectionPiece extends Piece
 
     public void move(Direction direction, int length)
     {
+        this.location = null;
+    }
+
+    public Direction[] getDirections()
+    {
+        return this.directions;
     }
 }
