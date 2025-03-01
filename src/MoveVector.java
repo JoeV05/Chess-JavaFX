@@ -3,16 +3,16 @@ public class MoveVector
     private int deltaX;
     private int deltaY;
 
-    public MoveVector(int x, int y, Colour colour)
+    public MoveVector(int deltaX, int deltaY, Colour colour)
     {
-        this.deltaX = x;
+        this.deltaX = deltaX;
 
         if (colour == Colour.BLACK)
         {
-            this.deltaY = y;
+            this.deltaY = deltaY;
         } else
         {
-            this.deltaY = -y;
+            this.deltaY = -deltaY;
         }
     }
 
@@ -22,5 +22,11 @@ public class MoveVector
         int newY = coordinate.getY() + deltaY;
         
         return new Coordinate(newX, newY);
+    }
+
+    public void printVector()
+    {
+        System.out.println("delta x: " + deltaX);
+        System.out.println("delta y: " + deltaY);
     }
 }
