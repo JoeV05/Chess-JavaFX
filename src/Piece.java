@@ -38,4 +38,9 @@ public abstract class Piece
     {
         return this.location.getY();
     }
+
+    public Coordinate getLocation()
+    {
+        return location;
+    }
 }
