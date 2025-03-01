@@ -17,7 +17,11 @@ public abstract class VectorPiece extends Piece
 
     public void move(MoveVector move)
     {
-        Coordinate newLocation = move.applyVector(this.location);
-        this.location = newLocation;
+        this.location = move.applyVector(this.location);
+    }
+
+    public MoveVector[] getVectors()
+    {
+        return this.possibleMoves;
     }
 }
