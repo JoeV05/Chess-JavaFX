@@ -8,4 +8,14 @@ public class MoveDirection
         this.distance = distance;
         this.direction = direction;
     }
+
+    public int getDistance()
+    {
+        return this.distance;
+    }
+
+    public Direction getDirection()
+    {
+        return this.direction;
+    }
 }
