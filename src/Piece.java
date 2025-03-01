@@ -28,4 +28,14 @@ public abstract class Piece
     {
         return this.sprite;
     }
+
+    public int getX()
+    {
+        return this.location.getX();
+    }
+
+    public int getY()
+    {
+        return this.location.getY();
+    }
 }
