@@ -33,13 +33,10 @@ public class Game
     public void handle(int x, int y)
     {
         Piece clickedPiece = board[y][x];
-        if (clickedPiece != null)
+        if (clickedPiece != null && clickedPiece.getColour() == this.currentTurn)
         {
-            if (clickedPiece.getColour() == this.currentTurn)
-            {
-                this.selected = clickedPiece;
-                this.state = State.PIECE_SELECTED;
-            }
+            this.selected = clickedPiece;
+            this.state = State.PIECE_SELECTED;
         } else if (this.state == State.PIECE_SELECTED)
         {
             //Move the selected piece
@@ -84,208 +81,289 @@ public class Game
         return possibleMoves;
     }
 
+    private int distanceToNorth(int x, int y)
+    {
+        if (y == 0)
+        {
+            return 0;
+        } else
+        {
+            int currentY = y - 1;
+
+            while (currentY >= 0)
+            {
+                Piece p = board[currentY][x];
+                if (p != null)
+                {
+                    if (p.getColour() == this.currentTurn)
+                    {
+                        return y - (currentY + 1);
+                    }
+                    return y - (currentY);
+                }
+
+                currentY--;
+            }
+            return y;
+        }
+    }
+
+    private int distanceToEast(int x, int y)
+    {
+        if (x == BOARD_SIZE - 1)
+        {
+            return 0;
+        } else
+        {
+            int currentX = x + 1;
+
+            while (currentX <= (BOARD_SIZE - 1))
+            {
+                Piece p = board[y][currentX];
+                if (p != null)
+                {
+                    if (p.getColour() == this.currentTurn)
+                    {
+                        return currentX - (x + 1);
+                    }
+                    return currentX - (x);
+                }
+
+                currentX++;
+            }
+
+            return BOARD_SIZE - (x + 1);
+        }
+    }
+
+    private int distanceToSouth(int x, int y)
+    {
+        if (y == BOARD_SIZE - 1)
+        {
+            return 0;
+        } else
+        {
+            int currentY = y + 1;
+
+            while (currentY <= (BOARD_SIZE - 1))
+            {
+                Piece p = board[currentY][x];
+
+                if (p != null)
+                {
+                    if (p.getColour() == this.currentTurn)
+                    {
+                        return currentY - (y + 1);
+                    }
+
+                    return currentY - (y);
+                }
+
+                currentY++;
+            }
+
+            return BOARD_SIZE - (y + 1);
+        }
+    }
+
+    private int distanceToWest(int x, int y)
+    {
+        if (x == 0)
+        {
+            return 0;
+        } else
+        {
+            int currentX = x - 1;
+
+            while (currentX >= 0)
+            {
+                Piece p = board[y][currentX];
+                if (p != null)
+                {
+                    if (p.getColour() == this.currentTurn)
+                    {
+                        return x - (currentX + 1);
+                    }
+                    return x - (currentX);
+                }
+
+                currentX--;
+            }
+            return x;
+        }
+    }
+
+    private int distanceToNorthEast(int x, int y)
+    {
+        if (y == 0 || x == BOARD_SIZE - 1)
+        {
+            return 0;
+        } else
+        {
+            int currentY = y - 1;
+            int currentX = x + 1;
+
+            while (currentY >= 0 && currentX <= BOARD_SIZE - 1)
+            {
+                Piece p = board[currentY][currentX];
+                if (p != null)
+                {
+                    if (p.getColour() == this.currentTurn)
+                    {
+                        return y - (currentY + 1);
+                    }
+                    return y - (currentY);
+                }
+
+                currentY--;
+                currentX++;
+            }
+
+            if (currentY == 0)
+            {
+                return y;
+            }
+
+            return x;
+        }
+    }
+
+    private int distanceToSouthEast(int x, int y)
+    {
+        if (y == BOARD_SIZE - 1 || x == BOARD_SIZE - 1)
+        {
+            return 0;
+        } else
+        {
+            int currentY = y + 1;
+            int currentX = x + 1;
+
+            while (currentY <= BOARD_SIZE - 1 && currentX <= BOARD_SIZE - 1)
+            {
+                Piece p = board[currentY][currentX];
+                if (p != null)
+                {
+                    if (p.getColour() == this.currentTurn)
+                    {
+                        return currentY - (y + 1);
+                    }
+                    return currentY - (y);
+                }
+
+                currentY++;
+                currentX++;
+            }
+
+            if (currentY == BOARD_SIZE - 1)
+            {
+                return y;
+            }
+
+            return x;
+        }
+    }
+
+    private int distanceToSouthWest(int x, int y)
+    {
+        if (y == BOARD_SIZE - 1 || x == 0)
+        {
+            return 0;
+        } else
+        {
+            int currentY = y + 1;
+            int currentX = x - 1;
+
+            while (currentY <= BOARD_SIZE - 1 && currentX >= 0)
+            {
+                Piece p = board[currentY][currentX];
+                if (p != null)
+                {
+                    if(p.getColour() == this.currentTurn)
+                    {
+                        return currentY - (y + 1);
+                    }
+                    return currentY - (y);
+                }
+
+                currentY++;
+                currentX--;
+            }
+
+            if (currentY == BOARD_SIZE - 1)
+            {
+                return y;
+            }
+
+            return x;
+        }
+    }
+
+    private int distanceToNorthWest(int x, int y)
+    {
+        if (y == 0 || x == 0)
+        {
+            return 0;
+        } else
+        {
+            int currentY = y - 1;
+            int currentX = x - 1;
+
+            while (currentY >= 0 && currentX >= 0)
+            {
+                Piece p = board[currentY][currentX];
+                if (p != null)
+                {
+                    if (p.getColour() == this.currentTurn)
+                    {
+                        return y - (currentY + 1);
+                    }
+                    return y - (currentY);
+                }
+
+                currentY--;
+                currentX--;
+            }
+
+            if (currentY == 0)
+            {
+                return y;
+            }
+
+            return x;
+        }
+    }
+
     private int distanceToBlock(Piece piece, Direction dir)
     {
         int x = piece.getX();
         int y = piece.getY();
-        int currentX;
-        int currentY;
+
         switch (dir)
         {
 
             case Direction.NORTH:
-                if (y == 0)
-                {
-                    return 0;
-                } else
-                {
-                    currentY = y - 1;
-
-                    while (currentY >= 0)
-                    {
-                        if (board[currentY][x] != null)
-                        {
-                            return y - (currentY + 1);
-                        }
-
-                        currentY--;
-                    }
-                    return y;
-                }
+                return this.distanceToNorth(x, y);
 
             case Direction.EAST:
-                if (x == BOARD_SIZE - 1)
-                {
-                    return 0;
-                } else
-                {
-                    currentX = x + 1;
-
-                    while (currentX <= (BOARD_SIZE - 1))
-                    {
-                        if (board[y][currentX] != null)
-                        {
-                            return currentX - (x + 1);
-                        }
-
-                        currentX++;
-                    }
-
-                    return BOARD_SIZE - (x + 1);
-                }
+                return this.distanceToEast(x, y);
 
             case Direction.SOUTH:
-                if (y == BOARD_SIZE - 1)
-                {
-                    return 0;
-                } else
-                {
-                    currentY = y + 1;
-
-                    while (currentY <= (BOARD_SIZE - 1))
-                    {
-                        if (board[currentY][x] != null)
-                        {
-                            return currentY - (y + 1);
-                        }
-
-                        currentY++;
-                    }
-
-                    return BOARD_SIZE - (y + 1);
-                }
+                return this.distanceToSouth(x, y);
 
             case Direction.WEST:
-                if (x == 0)
-                {
-                    return 0;
-                } else
-                {
-                    currentX = x - 1;
-
-                    while (currentX >= 0)
-                    {
-                        if (board[y][currentX] != null)
-                        {
-                            return x - (currentX + 1);
-                        }
-
-                        currentX--;
-                    }
-                    return x;
-                }
+                return this.distanceToWest(x, y);
 
             case Direction.NORTH_EAST:
-                if (y == 0 || x == BOARD_SIZE - 1)
-                {
-                    return 0;
-                } else
-                {
-                    currentY = y - 1;
-                    currentX = x + 1;
-
-                    while (currentY >= 0 && currentX <= BOARD_SIZE)
-                    {
-                        if (board[currentY][currentX] != null)
-                        {
-                            return y - (currentY + 1);
-                        }
-
-                        currentY--;
-                        currentX++;
-                    }
-
-                    if (currentY == 0)
-                    {
-                        return y;
-                    }
-
-                    return x;
-                }
+                return this.distanceToNorthEast(x, y);
 
             case Direction.SOUTH_EAST:
-                if (y == BOARD_SIZE - 1 || x == BOARD_SIZE - 1)
-                {
-                    return 0;
-                } else
-                {
-                    currentY = y + 1;
-                    currentX = x + 1;
-
-                    while (currentY <= BOARD_SIZE && currentX <= BOARD_SIZE)
-                    {
-                        if (board[currentY][currentX] != null)
-                        {
-                            return currentY - (y + 1);
-                        }
-
-                        currentY++;
-                        currentX++;
-                    }
-
-                    if (currentY == BOARD_SIZE - 1)
-                    {
-                        return y;
-                    }
-
-                    return x;
-                }
+                return this.distanceToSouthEast(x, y);
 
             case Direction.SOUTH_WEST:
-                if (y == BOARD_SIZE - 1 || x == 0)
-                {
-                    return 0;
-                } else
-                {
-                    currentY = y + 1;
-                    currentX = x - 1;
-
-                    while (currentY <= BOARD_SIZE && currentX >= 0)
-                    {
-                        if (board[currentY][currentX] != null)
-                        {
-                            return currentY - (y + 1);
-                        }
-
-                        currentY++;
-                        currentX--;
-                    }
-
-                    if (currentY == BOARD_SIZE - 1)
-                    {
-                        return y;
-                    }
-
-                    return x;
-                }
+                return this.distanceToSouthWest(x, y);
 
             case Direction.NORTH_WEST:
-                if (y == 0 || x == 0)
-                {
-                    return 0;
-                } else
-                {
-                    currentY = y - 1;
-                    currentX = x - 1;
-
-                    while (currentY >= 0 && currentX >= 0)
-                    {
-                        if (board[currentY][currentX] != null)
-                        {
-                            return y - (currentY + 1);
-                        }
-
-                        currentY--;
-                        currentX--;
-                    }
-
-                    if (currentY == 0)
-                    {
-                        return y;
-                    }
-
-                    return x;
-                }
+                return this.distanceToNorthWest(x, y);
 
             case null:
                 throw new IllegalArgumentException("Null entered for direction parameter");
@@ -327,10 +405,11 @@ public class Game
         this.addQueens();
 
         // TODO - debug pieces, remove at some point
-        board[4][4] = new Bishop(Colour.WHITE, new Coordinate(4, 4));
-        board[3][2] = new Bishop(Colour.WHITE, new Coordinate(2, 3));
-        board[3][4] = new Bishop(Colour.WHITE, new Coordinate(4, 3));
-        board[4][2] = new Bishop(Colour.WHITE, new Coordinate(2, 4));
+        board[4][4] = new Queen(Colour.WHITE, new Coordinate(4, 4));
+        board[2][2] = new Queen(Colour.WHITE, new Coordinate(2, 2));
+        board[3][6] = new Queen(Colour.WHITE, new Coordinate(6, 3));
+        board[5][2] = new Queen(Colour.WHITE, new Coordinate(2, 5));
+        board[4][0] = new Queen(Colour.WHITE, new Coordinate(0, 4));
     }
 
     private void addPawns()
