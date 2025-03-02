@@ -57,6 +57,88 @@ public class Game
                 if (Arrays.asList(moves).contains(m)) {
                     moveSelected(x, y);
                 }
+            } else
+            {
+                DirectionPiece d = (DirectionPiece) this.selected;
+                Direction direction = inferDirection(x, y);
+                int distance = getDistanceFromSelected(x, y);
+                MoveDirection[] allowedMoves = this.getPossibleDirectionalMoves(d);
+                MoveDirection move = new MoveDirection(distance, direction);
+
+                if (Arrays.asList(allowedMoves).contains(move))
+                {
+                    moveSelected(x, y);
+                }
+            }
+        }
+    }
+
+    private Direction inferDirection(int x, int y)
+    {
+        if (x == this.selected.getX())
+        {
+            if (y > this.selected.getY())
+            {
+                return Direction.SOUTH;
+            }
+
+            return Direction.NORTH;
+        } else if (y == this.selected.getY())
+        {
+            if (x > this.selected.getX())
+            {
+                return Direction.EAST;
+            }
+
+            return Direction.WEST;
+        } else
+        {
+            if (x > this.selected.getX())
+            {
+                if (y > this.selected.getY())
+                {
+                    return Direction.SOUTH_EAST;
+                }
+
+                return Direction.NORTH_EAST;
+            } else
+            {
+                if (y > this.selected.getY())
+                {
+                    return Direction.SOUTH_WEST;
+                }
+
+                return Direction.NORTH_WEST;
+            }
+        }
+    }
+
+    private int getDistanceFromSelected(int x, int y)
+    {
+        if (x == this.selected.getX())
+        {
+            if (y > this.selected.getY())
+            {
+                return y - this.selected.getY();
+            }
+
+            return this.selected.getY() - y;
+        } else if (y == this.selected.getY())
+        {
+            if (x > this.selected.getX())
+            {
+                return x - this.selected.getX();
+            }
+
+            return this.selected.getX() - x;
+        } else
+        {
+            if (x > this.selected.getX())
+            {
+                return x - this.selected.getX();
+            } else
+            {
+                return this.selected.getX() - x;
             }
         }
     }
