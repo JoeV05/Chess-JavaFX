@@ -1,4 +1,3 @@
-import com.sun.prism.impl.ps.CachingEllipseRep;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -70,43 +69,123 @@ public class Main extends Application
         this.drawHighlights(Game.getGame().getSelected(), gc);
     }
 
+    private void highlightVectors(VectorPiece p, GraphicsContext gc)
+    {
+        MoveVector[] moves = Game.getGame().getPossibleVectorMoves(p);
+
+        for (int i = 0; i < moves.length; i++)
+        {
+            if (moves[i] != null)
+            {
+                Coordinate highlightCoordinates = moves[i].applyVector(p.getLocation());
+                int highlightX = highlightCoordinates.getX() * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                int highlightY = highlightCoordinates.getY() * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+
+                gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
+            }
+        }
+    }
+
+    private void highlightDirectional(DirectionPiece p, GraphicsContext gc)
+    {
+        MoveDirection[] moves = Game.getGame().getPossibleDirectionalMoves(p);
+        System.out.println(moves.length);
+        for (int i = 0; i < moves.length; i++)
+        {
+            if (moves[i] != null)
+            {
+                MoveDirection move = moves[i];
+
+                switch (move.getDirection())
+                {
+                    case Direction.NORTH:
+                        for (int j = 0; j < move.getDistance(); j++)
+                        {
+                            int highlightX = p.getX() * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            int highlightY = (p.getY() - (j + 1))  * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
+                        }
+                        break;
+
+                    case Direction.SOUTH:
+                        for (int j = 0; j < move.getDistance(); j++)
+                        {
+                            int highlightX = p.getX() * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            int highlightY = (p.getY() + j + 1)  * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
+                        }
+                        break;
+
+                    case Direction.EAST:
+                        for (int j = 0; j < move.getDistance(); j++)
+                        {
+                            int highlightX = (p.getX() + j + 1) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            int highlightY = p.getY()  * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
+                        }
+                        break;
+
+                    case Direction.WEST:
+                        for (int j = 0; j < move.getDistance(); j++)
+                        {
+                            int highlightX = (p.getX() - (j + 1)) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            int highlightY = p.getY() * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
+                        }
+                        break;
+
+                    case Direction.NORTH_EAST:
+                        for (int j = 0; j < move.getDistance(); j++)
+                        {
+                            int highlightX = (p.getX() + j + 1) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            int highlightY = (p.getY() - (j + 1)) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
+                        }
+                        break;
+
+                    case Direction.SOUTH_EAST:
+                        for (int j = 0; j < move.getDistance(); j++)
+                        {
+                            int highlightX = (p.getX() + j + 1) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            int highlightY = (p.getY() + j + 1) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
+                        }
+                        break;
+
+                    case Direction.SOUTH_WEST:
+                        for (int j = 0; j < move.getDistance(); j++)
+                        {
+                            int highlightX = (p.getX() - (j + 1)) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            int highlightY = (p.getY() + j + 1) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
+                        }
+                        break;
+
+                    case Direction.NORTH_WEST:
+                        for (int j = 0; j < move.getDistance(); j++)
+                        {
+                            int highlightX = (p.getX() - (j + 1)) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            int highlightY = (p.getY() - (j + 1)) * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
+                            gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
+                        }
+                        break;
+
+                }
+            }
+        }
+    }
+
     private void drawHighlights(Piece p, GraphicsContext gc)
     {
         if (p != null)
         {
-            int x = p.getX();
-            int y = p.getY();
-            Coordinate coordinate = p.getLocation();
-
             gc.setFill(Color.STEELBLUE);
-
             if (p instanceof VectorPiece)
             {
-                MoveVector[] moves = Game.getGame().getPossibleVectorMoves((VectorPiece) p);
-
-                for (int i = 0; i < moves.length; i++)
-                {
-                    if (moves[i] != null)
-                    {
-                        Coordinate highlightCoordinates = moves[i].applyVector(coordinate);
-                        int highlightX = highlightCoordinates.getX() * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
-                        int highlightY = highlightCoordinates.getY() * GRID_CELL_SIZE + (GRID_CELL_SIZE/4);
-
-                        gc.fillOval(highlightX, highlightY, GRID_CELL_SIZE/2, GRID_CELL_SIZE/2);
-                    }
-                }
+                this.highlightVectors((VectorPiece) p, gc);
             } else
             {
-                MoveDirection[] moves = Game.getGame().getPossibleDirectionalMoves((DirectionPiece) p);
-                System.out.println(moves.length);
-                for (int i = 0; i < moves.length; i++)
-                {
-                    if (moves[i] != null)
-                    {
-                        MoveDirection move = moves[i];
-                        System.out.println(p + " can move up to " + move.getDistance() + " " + move.getDirection());
-                    }
-                }
+                this.highlightDirectional((DirectionPiece) p, gc);
             }
         }
     }
@@ -117,7 +196,7 @@ public class Main extends Application
         {
             for (int x = 0; x < Game.BOARD_SIZE; x++)
             {
-                if ((y % 2 == 0 && x % 2 == 1) || (y % 2 == 1 && x % 2 == 0))
+                if (isDarkTile(x, y))
                 {
                     gc.setFill(Color.DARKOLIVEGREEN);
                     gc.fillRect(x * GRID_CELL_SIZE, y * GRID_CELL_SIZE, GRID_CELL_SIZE, GRID_CELL_SIZE);
@@ -128,6 +207,21 @@ public class Main extends Application
                 }
             }
         }
+    }
+
+    private boolean isDarkTile(int x, int y)
+    {
+        return this.isEvenOnOddRow(x, y) || this.isOddOnEvenRow(x, y);
+    }
+
+    private boolean isEvenOnOddRow(int x, int y)
+    {
+        return y % 2 == 1 && x % 2 == 0;
+    }
+
+    private boolean isOddOnEvenRow(int x, int y)
+    {
+        return y % 2 == 0 && x % 2 == 1;
     }
 
     private void drawPieces(GraphicsContext gc)
