@@ -29,7 +29,7 @@ public class MoveDirection
 
         MoveDirection move = (MoveDirection) o;
 
-        if(move.getDistance() == this.distance && move.getDirection() == this.direction)
+        if(move.getDistance() <= this.distance && move.getDirection() == this.direction)
         {
             return true;
         }
