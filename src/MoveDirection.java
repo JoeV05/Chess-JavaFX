@@ -18,4 +18,22 @@ public class MoveDirection
     {
         return this.direction;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof MoveDirection))
+        {
+            return false;
+        }
+
+        MoveDirection move = (MoveDirection) o;
+
+        if(move.getDistance() == this.distance && move.getDirection() == this.direction)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
