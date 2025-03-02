@@ -29,4 +29,32 @@ public class MoveVector
         System.out.println("delta x: " + deltaX);
         System.out.println("delta y: " + deltaY);
     }
+
+    private int getDeltaX()
+    {
+        return this.deltaX;
+    }
+
+    private int getDeltaY()
+    {
+        return this.deltaY;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof MoveVector))
+        {
+            return false;
+        }
+
+        MoveVector move = (MoveVector) o;
+
+        if (move.getDeltaX() == this.deltaX && move.getDeltaY() == this.deltaY)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
