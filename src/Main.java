@@ -104,7 +104,7 @@ public class Main extends Application
                     if (moves[i] != null)
                     {
                         MoveDirection move = moves[i];
-                        System.out.println(p + " can move " + move.getDistance() + " " + move.getDirection());
+                        System.out.println(p + " can move up to " + move.getDistance() + " " + move.getDirection());
                     }
                 }
             }
