@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Game
 {
     public static final int BOARD_SIZE = 8;
@@ -39,8 +41,34 @@ public class Game
             this.state = State.PIECE_SELECTED;
         } else if (this.state == State.PIECE_SELECTED)
         {
+            if (this.selected instanceof VectorPiece)
+            {
+                int deltaY = y - selected.getY();
 
+                if (y < selected.getY())
+                {
+                    deltaY = -1 * deltaY;
+                }
+
+                MoveVector m = new MoveVector(x - selected.getX(), deltaY, selected.getColour());
+                m.printVector();
+                MoveVector[] moves = this.getPossibleVectorMoves((VectorPiece) this.selected);
+
+                if (Arrays.asList(moves).contains(m)) {
+                    moveSelected(x, y);
+                }
+            }
         }
+    }
+
+    private void moveSelected(int x, int y)
+    {
+        board[this.selected.getY()][this.selected.getX()] = null;
+        this.selected.move(new Coordinate(x, y));
+        board[y][x] = this.selected;
+        this.selected = null;
+        this.currentTurn = (this.currentTurn == Colour.WHITE) ? Colour.BLACK : Colour.WHITE;
+        this.state = State.NONE_SELECTED;
     }
 
     public MoveVector[] getPossibleVectorMoves(VectorPiece p)
@@ -57,7 +85,7 @@ public class Game
             int x = newC.getX();
             int y = newC.getY();
 
-            if ((x < BOARD_SIZE && y < BOARD_SIZE) && (x >= 0 && y >= 0) && board[y][x] == null)
+            if ((x < BOARD_SIZE && y < BOARD_SIZE) && (x >= 0 && y >= 0) && (board[y][x] == null || board[y][x].getColour() != this.selected.getColour()))
             {
                 allowedMoves[i] = move;
             }
