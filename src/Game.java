@@ -176,13 +176,119 @@ public class Game
                 }
 
             case Direction.NORTH_EAST:
-            case Direction.SOUTH_EAST:
-            case Direction.SOUTH_WEST:
-            case Direction.NORTH_WEST:
-                return 0;
+                if (y == 0 || x == BOARD_SIZE - 1)
+                {
+                    return 0;
+                } else
+                {
+                    currentY = y - 1;
+                    currentX = x + 1;
 
-            default:
-                throw new IllegalArgumentException("Invalid direction passed in: " + dir);
+                    while (currentY >= 0 && currentX <= BOARD_SIZE)
+                    {
+                        if (board[currentY][currentX] != null)
+                        {
+                            return y - (currentY + 1);
+                        }
+
+                        currentY--;
+                        currentX++;
+                    }
+
+                    if (currentY == 0)
+                    {
+                        return y;
+                    }
+
+                    return x;
+                }
+
+            case Direction.SOUTH_EAST:
+                if (y == BOARD_SIZE - 1 || x == BOARD_SIZE - 1)
+                {
+                    return 0;
+                } else
+                {
+                    currentY = y + 1;
+                    currentX = x + 1;
+
+                    while (currentY <= BOARD_SIZE && currentX <= BOARD_SIZE)
+                    {
+                        if (board[currentY][currentX] != null)
+                        {
+                            return currentY - (y + 1);
+                        }
+
+                        currentY++;
+                        currentX++;
+                    }
+
+                    if (currentY == BOARD_SIZE - 1)
+                    {
+                        return y;
+                    }
+
+                    return x;
+                }
+
+            case Direction.SOUTH_WEST:
+                if (y == BOARD_SIZE - 1 || x == 0)
+                {
+                    return 0;
+                } else
+                {
+                    currentY = y + 1;
+                    currentX = x - 1;
+
+                    while (currentY <= BOARD_SIZE && currentX >= 0)
+                    {
+                        if (board[currentY][currentX] != null)
+                        {
+                            return currentY - (y + 1);
+                        }
+
+                        currentY++;
+                        currentX--;
+                    }
+
+                    if (currentY == BOARD_SIZE - 1)
+                    {
+                        return y;
+                    }
+
+                    return x;
+                }
+
+            case Direction.NORTH_WEST:
+                if (y == 0 || x == 0)
+                {
+                    return 0;
+                } else
+                {
+                    currentY = y - 1;
+                    currentX = x - 1;
+
+                    while (currentY >= 0 && currentX >= 0)
+                    {
+                        if (board[currentY][currentX] != null)
+                        {
+                            return y - (currentY + 1);
+                        }
+
+                        currentY--;
+                        currentX--;
+                    }
+
+                    if (currentY == 0)
+                    {
+                        return y;
+                    }
+
+                    return x;
+                }
+
+            case null:
+                throw new IllegalArgumentException("Null entered for direction parameter");
         }
     }
 
@@ -221,9 +327,10 @@ public class Game
         this.addQueens();
 
         // TODO - debug pieces, remove at some point
-        //board[4][4] = new Rook(Colour.WHITE, new Coordinate(4, 4));
-        //board[5][5] = new Rook(Colour.WHITE, new Coordinate(5, 5));
-        //board[3][3] = new Rook(Colour.WHITE, new Coordinate(3, 3));
+        board[4][4] = new Bishop(Colour.WHITE, new Coordinate(4, 4));
+        board[3][2] = new Bishop(Colour.WHITE, new Coordinate(2, 3));
+        board[3][4] = new Bishop(Colour.WHITE, new Coordinate(4, 3));
+        board[4][2] = new Bishop(Colour.WHITE, new Coordinate(2, 4));
     }
 
     private void addPawns()
