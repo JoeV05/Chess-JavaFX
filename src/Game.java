@@ -39,8 +39,7 @@ public class Game
             this.state = State.PIECE_SELECTED;
         } else if (this.state == State.PIECE_SELECTED)
         {
-            //Move the selected piece
-            System.out.println("Test text");
+
         }
     }
 
@@ -403,13 +402,6 @@ public class Game
         this.addBishops();
         this.addKings();
         this.addQueens();
-
-        // TODO - debug pieces, remove at some point
-        board[4][4] = new Queen(Colour.WHITE, new Coordinate(4, 4));
-        board[2][2] = new Queen(Colour.WHITE, new Coordinate(2, 2));
-        board[3][6] = new Queen(Colour.WHITE, new Coordinate(6, 3));
-        board[5][2] = new Queen(Colour.WHITE, new Coordinate(2, 5));
-        board[4][0] = new Queen(Colour.WHITE, new Coordinate(0, 4));
     }
 
     private void addPawns()
