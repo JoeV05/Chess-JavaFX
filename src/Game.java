@@ -75,7 +75,7 @@ public class Game
         MoveDirection[] possibleMoves = new MoveDirection[dirs.length];
         for (int i = 0; i < dirs.length; i++)
         {
-            int distance = this.distanceToBlock((Piece) p, dirs[i]);
+            int distance = this.distanceToBlock(p, dirs[i]);
             if (distance > 0) {
                 MoveDirection m = new MoveDirection(distance, dirs[i]);
                 possibleMoves[i] = m;
@@ -94,51 +94,85 @@ public class Game
         {
 
             case Direction.NORTH:
-                currentY = y + 1;
-                while (currentY >= 0)
+                if (y == 0)
                 {
-                    if (this.board[currentY][x] != null)
-                    {
-                        return piece.getY() - currentY;
-                    }
+                    return 0;
+                } else
+                {
+                    currentY = y - 1;
 
-                    currentY--;
+                    while (currentY >= 0)
+                    {
+                        if (board[currentY][x] != null)
+                        {
+                            return y - (currentY + 1);
+                        }
+
+                        currentY--;
+                    }
+                    return y;
                 }
 
             case Direction.EAST:
-                currentX = x + 1;
-                while (currentX <= 7)
+                if (x == BOARD_SIZE - 1)
                 {
-                    if (this.board[y][currentX] != null)
+                    return 0;
+                } else
+                {
+                    currentX = x + 1;
+
+                    while (currentX <= (BOARD_SIZE - 1))
                     {
-                        return currentX - x;
+                        if (board[y][currentX] != null)
+                        {
+                            return currentX - (x + 1);
+                        }
+
+                        currentX++;
                     }
 
-                    currentX++;
+                    return BOARD_SIZE - (x + 1);
                 }
 
             case Direction.SOUTH:
-                currentY = y - 1;
-                while (currentY <= 7)
+                if (y == BOARD_SIZE - 1)
                 {
-                    if (this.board[currentY][x] != null)
+                    return 0;
+                } else
+                {
+                    currentY = y + 1;
+
+                    while (currentY <= (BOARD_SIZE - 1))
                     {
-                        return piece.getY() - currentY;
+                        if (board[currentY][x] != null)
+                        {
+                            return currentY - (y + 1);
+                        }
+
+                        currentY++;
                     }
 
-                    currentY--;
+                    return BOARD_SIZE - (y + 1);
                 }
 
             case Direction.WEST:
-                currentX = x + 1;
-                while (currentX >= 0)
+                if (x == 0)
                 {
-                    if (this.board[y][currentX] != null)
-                    {
-                        return x - currentX;
-                    }
+                    return 0;
+                } else
+                {
+                    currentX = x - 1;
 
-                    currentX--;
+                    while (currentX >= 0)
+                    {
+                        if (board[y][currentX] != null)
+                        {
+                            return x - (currentX + 1);
+                        }
+
+                        currentX--;
+                    }
+                    return x;
                 }
 
             case Direction.NORTH_EAST:
@@ -187,7 +221,9 @@ public class Game
         this.addQueens();
 
         // TODO - debug pieces, remove at some point
-        board[4][4] = new Queen(Colour.WHITE, new Coordinate(4, 4));
+        //board[4][4] = new Rook(Colour.WHITE, new Coordinate(4, 4));
+        //board[5][5] = new Rook(Colour.WHITE, new Coordinate(5, 5));
+        //board[3][3] = new Rook(Colour.WHITE, new Coordinate(3, 3));
     }
 
     private void addPawns()
