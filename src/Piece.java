@@ -43,4 +43,9 @@ public abstract class Piece
     {
         return location;
     }
+
+    public void move(Coordinate newLocation)
+    {
+        this.location = newLocation;
+    }
 }
