@@ -19,11 +19,13 @@ public class Pawn extends VectorPiece
     @Override
     public void move(Coordinate newLocation)
     {
-        if (hasMoved)
-        {
-            this.possibleMoves = new MoveVector[] {new MoveVector(0, 1, this.colour)};
-        }
 
         this.location = newLocation;
+
+        if (!this.hasMoved)
+        {
+            this.possibleMoves = new MoveVector[] {new MoveVector(0, 1, this.colour)};
+            this.hasMoved = true;
+        }
     }
 }
